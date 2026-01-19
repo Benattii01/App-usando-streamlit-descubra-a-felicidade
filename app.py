@@ -1,7 +1,12 @@
 import streamlit as st  
 import pandas as pd
+import joblib
 
-model3 = pd.read_pickle('model_feliz3.pkl')
+data = joblib.load('model_feliz3.pkl')
+model3 = data['model']
+features = data['features']
+
+#model3 = pd.read_pickle('model_feliz3.pkl')
 #frase de inicio 
 st.markdown("# Profissional de Dados descubra se você é Feliz! ")
 st.markdown("Teste diferentes cenários explorando como as variáveis podem influenciar sua felicidade ")
@@ -145,7 +150,7 @@ df = pd.concat([df_template,df_final]).fillna(0)
 
 #st.data_editor(df)
 
-proba = model3['model'].predict_proba(df[model3['features']])[:,1][0]
+proba = model3.predict_proba(df[features])[:, 1][0]
 
 if proba > 0.7:
     st.success(f"Você é uma pessoa feliz! Probabilidade: {100 * proba:.0f}%")
